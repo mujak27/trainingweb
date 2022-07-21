@@ -1,3 +1,0 @@
-type book {
-  num: Int
-}

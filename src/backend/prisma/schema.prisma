@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AnimeGenre {
+  Romance
+  Drama
+  Action
+  Comedy
+  Horror
+  Fantasy
+}
+
+model User {
+  userId        String          @id @default(uuid())
+  userName      String          @unique
+  userEmail     String
+  userPassword  String
+  animeFavorite AnimeFavorite[]
+}
+
+model Anime {
+  animeId          String          @id @default(uuid())
+  animeName        String
+  animeImageLink   String
+  animeReleaseDate String
+  animeGenre       String
+  animeFavorite    AnimeFavorite[]
+}
+
+model AnimeFavorite {
+  animeFavoriteId String @id @default(uuid())
+  anime           Anime  @relation(fields: [animeAnimeId], references: [animeId], onDelete: Cascade)
+  animeAnimeId    String
+  user            User   @relation(fields: [userUserId], references: [userId], onDelete: Cascade)
+  userUserId      String
+
+  @@map("animeFavorite")
+}
