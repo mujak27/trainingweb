@@ -16,7 +16,7 @@ const sessionData : Array<{
 export const createUser = mutationField("createUser", {
   type: nullable(User),
   args: {
-    where: nonNull(inputObjectType({
+    input: nonNull(inputObjectType({
       name: 'createUser',
       definition(t){
         t.nonNull.string('userName')
@@ -26,7 +26,7 @@ export const createUser = mutationField("createUser", {
     }))
   },
   resolve: async (_, args, context)=>{
-    const userData = {...args.where};
+    const userData = {...args.input};
     userData.userPassword = await bcrypt.hash(userData.userPassword, 10);
     return context.prisma.user.create({
       data: {
@@ -53,7 +53,7 @@ export const deleteUser = mutationField("deleteUser", {
 export const createAnime = mutationField("createAnime", {
   type: nullable(Anime),
   args: {
-    where : nonNull(inputObjectType({
+    input : nonNull(inputObjectType({
       name: 'createAnime',
       definition(t){
         t.nonNull.string('animeName')
@@ -66,7 +66,7 @@ export const createAnime = mutationField("createAnime", {
   resolve: async (_, args, context)=>{
     return context.prisma.anime.create({
       data : {
-        ...args.where
+        ...args.input
       }
     })
   }
@@ -90,7 +90,7 @@ export const deleteAnime = mutationField("deleteAnime", {
 export const createAnimeFavorite = mutationField("createAnimeFavorite", {
   type: nullable(AnimeFavorite),
   args: {
-    where: nonNull(inputObjectType({
+    input: nonNull(inputObjectType({
       name: 'createAnimeFavorite',
       definition(t){
         t.nonNull.id('userUserId')
@@ -101,17 +101,17 @@ export const createAnimeFavorite = mutationField("createAnimeFavorite", {
   resolve: async (_, args, context) => {
     return context.prisma.animeFavorite.create({
       data : {
-        ...args.where
+        ...args.input
       }
     })
   }
 })
 
-export const deleteAnimeFavorite = mutationField("deleteAnimeFavorite", {
+export const deleteAnimeFavoriteById = mutationField("deleteAnimeFavoriteById", {
   type: nullable(AnimeFavorite),
   args: {
-    where: nonNull(inputObjectType({
-      name: 'deleteAnimeFavorite',
+    input: nonNull(inputObjectType({
+      name: 'deleteAnimeFavoriteById',
       definition(t){
         t.nonNull.id('animeFavoriteId')
       }
@@ -120,16 +120,48 @@ export const deleteAnimeFavorite = mutationField("deleteAnimeFavorite", {
   resolve: async (_, args, context)=>{
     return context.prisma.animeFavorite.delete({
       where: {
-        animeFavoriteId : args.where.animeFavoriteId
+        animeFavoriteId : args.input.animeFavoriteId
       }
     })
+  }
+})
+
+
+export const deleteAnimeFavorite = mutationField("deleteAnimeFavorite", {
+  type: nullable(AnimeFavorite),
+  args: {
+    input: nonNull(inputObjectType({
+      name: 'deleteAnimeFavorite',
+      definition(t){ 
+        t.nonNull.id('animeAnimeId')
+        t.nonNull.id('userUserId')
+      }
+    }))
+  },
+  resolve: async (_, args, context)=>{
+    const check = await context.prisma.animeFavorite.findFirst({
+      where: {
+        animeAnimeId : args.input.animeAnimeId,
+        userUserId : args.input.userUserId
+      }
+    })
+    console.log(check)
+    // return check
+    if(!check) return null;
+    await context.prisma.animeFavorite.deleteMany({
+      where: {
+        animeAnimeId : args.input.animeAnimeId,
+        userUserId : args.input.userUserId
+      }
+    })
+    return check;
   }
 })
 
 export const login = mutationField("login", {
   type: nullable(Session),
   args:{
-    where: nonNull(inputObjectType({
+    input: nonNull(inputObjectType({
       name: 'login',
       definition(t){
         t.nonNull.string('userEmail')
@@ -140,11 +172,11 @@ export const login = mutationField("login", {
   resolve : async (_, args, context)=>{
     const user = await context.prisma.user.findFirst({
       where:{
-        userEmail : args.where.userEmail
+        userEmail : args.input.userEmail
       }
     })
     if(!user) return null;
-    const check = await bcrypt.compare(args.where.userPassword, user.userPassword);
+    const check = await bcrypt.compare(args.input.userPassword, user.userPassword);
     if(!check) return null;
 
     const key = generateKey();
@@ -163,7 +195,7 @@ export const login = mutationField("login", {
 export const getSessionData = mutationField('getSessionData', {
   type: nullable(User),
   args : {
-    where : nonNull(inputObjectType({
+    input : nonNull(inputObjectType({
       name: 'getSessionData',
       definition(t){
         t.nonNull.string('sessionKey')
@@ -171,7 +203,7 @@ export const getSessionData = mutationField('getSessionData', {
     }))
   },
   resolve: async (_, args, context)=>{
-    const users = sessionData.filter((data)=>{return data.key === args.where.sessionKey});
+    const users = sessionData.filter((data)=>{return data.key === args.input.sessionKey});
     if(!users) return null;
     const user = users[0].value;
     return user;

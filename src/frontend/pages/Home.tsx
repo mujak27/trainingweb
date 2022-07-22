@@ -1,7 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router, Route, Routes
-} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AnimeAll } from "../components/anime/AnimeAll";
 import { Navigation } from "../components/navigation/Navigation";
 import { Login } from "./Login";

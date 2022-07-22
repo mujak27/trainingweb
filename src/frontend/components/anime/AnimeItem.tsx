@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { AnimeDetail } from "./AnimeDetail";
 
 type props={
-  anime : Anime
+  anime : Anime,
+  favorited : boolean
 };
 
-export const AnimeItem:React.FC<props> = ({anime}) => {
+export const AnimeItem:React.FC<props> = ({anime, favorited}) => {
   const [showDetail, setShowDetail] = useState(false);
 
   return (
@@ -20,7 +21,7 @@ export const AnimeItem:React.FC<props> = ({anime}) => {
       </div>
       {
         showDetail ? 
-          <AnimeDetail anime={anime} /> :
+          <AnimeDetail anime={anime} favorited={favorited} /> :
           null
       }
     </>

@@ -15,6 +15,7 @@
     "express-graphql": "^0.12.0",
     "graphql-middleware": "^6.1.31",
     "graphql-subscriptions": "^2.0.0",
+    "nanoid": "^4.0.0",
     "nexus": "^1.3.0",
     "nexus-prisma": "^0.35.0",
     "nodemon": "^2.0.19",
@@ -28,15 +29,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "backend:nodemon": "nodemon --watch './**/*.ts' --exec 'node --loader ts-node/esm' src/server.ts",
-    "backend:nodeLoader": "node --loader ts-node/esm src/server.ts",
-    "backend:nexus:generate": "ts-node --transpile-only src/backend/types/nexusSchemaGen.ts",
-    "backend:prisma:migrateDev": "prisma migrate dev --schema src/backend/prisma/schema.prisma",
-    "backend:prisma:push": "prisma db push --schema src/backend/prisma/schema.prisma"
+    "monorepo" : "concurrently 'npm run back:nodemon' 'npm run front:react:start'",
+    "front:react:start": "react-scripts start",
+    "back:nodemon": "nodemon --watch './**/*.ts' --exec 'node --loader ts-node/esm' src/server.ts",
+    "back:nodeLoader": "node --loader ts-node/esm src/server.ts",
+    "back:nexus:generate": "ts-node --transpile-only src/backend/types/nexusSchemaGen.ts",
+    "back:prisma:migrateDev": "prisma migrate dev --schema src/backend/prisma/schema.prisma",
+    "back:prisma:push": "prisma db push --schema src/backend/prisma/schema.prisma"
   },
   "eslintConfig": {
     "extends": [

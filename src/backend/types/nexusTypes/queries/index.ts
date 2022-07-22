@@ -27,39 +27,18 @@ export const animeFavorites = queryField("animeFavorites", {
 export const animeFavoritedByUser = queryField("animeFavoritedByUser", {
   type: nonNull(list(nonNull(AnimeFavorite))),
   args: {
-    where : nonNull(inputObjectType({
+    input : nonNull(inputObjectType({
       name : 'animeFavoritedByUser',
       definition(t){
-        t.nonNull.id('userId')
+        t.nonNull.id('userUserId')
       }
     }))
   },
   resolve: (_root, args, context) => {
     return context.prisma.animeFavorite.findMany({
       where: {
-        userUserId : args.where.userId
+        userUserId : args.input.userUserId
       }
     })
   }
 })
-
-
-// export const anime = queryField("anime",{
-//   type: nonNull(list(nonNull(Anime))),
-//   args: {
-//     where: nonNull(inputObjectType({
-//       name: 'anime',
-//       definition(t){
-//         t.nonNull.id('id')
-//       }
-//     }))
-//   },
-//   resolve: async (_root, args, ctx)=>{
-//     return ctx.context.anime.findUnique({
-//       where:{
-//         animeId : args.where.id
-//       },
-//       rejectOnNotFound: true,
-//     })
-//   }
-// })

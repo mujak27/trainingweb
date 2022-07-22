@@ -15,7 +15,7 @@ declare global {
 
 export interface NexusGenInputs {
   animeFavoritedByUser: { // input type
-    userId: string; // ID!
+    userUserId: string; // ID!
   }
   createAnime: { // input type
     animeGenre: string; // String!
@@ -33,6 +33,10 @@ export interface NexusGenInputs {
     userPassword: string; // String!
   }
   deleteAnimeFavorite: { // input type
+    animeAnimeId: string; // ID!
+    userUserId: string; // ID!
+  }
+  deleteAnimeFavoriteById: { // input type
     animeFavoriteId: string; // ID!
   }
   getSessionData: { // input type
@@ -74,6 +78,7 @@ export interface NexusGenObjects {
     sessionKey: string; // String!
   }
   User: { // root type
+    userAdmin: boolean; // Boolean!
     userEmail: string; // String!
     userId: string; // ID!
     userName: string; // String!
@@ -110,6 +115,7 @@ export interface NexusGenFieldTypes {
     createUser: NexusGenRootTypes['User'] | null; // User
     deleteAnime: NexusGenRootTypes['Anime'] | null; // Anime
     deleteAnimeFavorite: NexusGenRootTypes['AnimeFavorite'] | null; // AnimeFavorite
+    deleteAnimeFavoriteById: NexusGenRootTypes['AnimeFavorite'] | null; // AnimeFavorite
     deleteUser: NexusGenRootTypes['User'] | null; // User
     getSessionData: NexusGenRootTypes['User'] | null; // User
     login: NexusGenRootTypes['Session'] | null; // Session
@@ -126,6 +132,7 @@ export interface NexusGenFieldTypes {
     sessionKey: string; // String!
   }
   User: { // field return type
+    userAdmin: boolean; // Boolean!
     userEmail: string; // String!
     userId: string; // ID!
     userName: string; // String!
@@ -152,6 +159,7 @@ export interface NexusGenFieldTypeNames {
     createUser: 'User'
     deleteAnime: 'Anime'
     deleteAnimeFavorite: 'AnimeFavorite'
+    deleteAnimeFavoriteById: 'AnimeFavorite'
     deleteUser: 'User'
     getSessionData: 'User'
     login: 'Session'
@@ -168,6 +176,7 @@ export interface NexusGenFieldTypeNames {
     sessionKey: 'String'
   }
   User: { // field return type name
+    userAdmin: 'Boolean'
     userEmail: 'String'
     userId: 'ID'
     userName: 'String'
@@ -178,27 +187,30 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     createAnime: { // args
-      where: NexusGenInputs['createAnime']; // createAnime!
+      input: NexusGenInputs['createAnime']; // createAnime!
     }
     createAnimeFavorite: { // args
-      where: NexusGenInputs['createAnimeFavorite']; // createAnimeFavorite!
+      input: NexusGenInputs['createAnimeFavorite']; // createAnimeFavorite!
     }
     createUser: { // args
-      where: NexusGenInputs['createUser']; // createUser!
+      input: NexusGenInputs['createUser']; // createUser!
     }
     deleteAnimeFavorite: { // args
-      where: NexusGenInputs['deleteAnimeFavorite']; // deleteAnimeFavorite!
+      input: NexusGenInputs['deleteAnimeFavorite']; // deleteAnimeFavorite!
+    }
+    deleteAnimeFavoriteById: { // args
+      input: NexusGenInputs['deleteAnimeFavoriteById']; // deleteAnimeFavoriteById!
     }
     getSessionData: { // args
-      where: NexusGenInputs['getSessionData']; // getSessionData!
+      input: NexusGenInputs['getSessionData']; // getSessionData!
     }
     login: { // args
-      where: NexusGenInputs['login']; // login!
+      input: NexusGenInputs['login']; // login!
     }
   }
   Query: {
     animeFavoritedByUser: { // args
-      where: NexusGenInputs['animeFavoritedByUser']; // animeFavoritedByUser!
+      input: NexusGenInputs['animeFavoritedByUser']; // animeFavoritedByUser!
     }
   }
 }

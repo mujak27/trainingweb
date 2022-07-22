@@ -24,6 +24,7 @@ model User {
   userName      String          @unique
   userEmail     String
   userPassword  String
+  userAdmin     Boolean         @default(false)
   animeFavorite AnimeFavorite[]
 }
 
@@ -37,11 +38,12 @@ model Anime {
 }
 
 model AnimeFavorite {
-  animeFavoriteId String @id @default(uuid())
+  animeFavoriteId String @default(uuid()) @unique
   anime           Anime  @relation(fields: [animeAnimeId], references: [animeId], onDelete: Cascade)
   animeAnimeId    String
   user            User   @relation(fields: [userUserId], references: [userId], onDelete: Cascade)
   userUserId      String
 
+  @@index([animeAnimeId, userUserId, animeFavoriteId])
   @@map("animeFavorite")
 }

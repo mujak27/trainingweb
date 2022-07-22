@@ -2,20 +2,11 @@ import { useMutation } from "@apollo/client";
 import { User } from "@prisma/client";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { mutationGetSessionData } from "../lib/graphql/query";
+import { strings } from "../utils/strings";
 
 type props = {
   children : React.ReactNode | React.ReactNode[]
 }
-type typeContextProvider = {
-  user : User,
-  sessionKey : String
-}
-let context = createContext<typeContextProvider>({
-  user : '' as unknown as User,
-  sessionKey : localStorage.getItem('sessionKey') as string,
-})
-export const useContextProvider = () => useContext(context);
-
 
 export enum enumTheme {
   dark = 'dark',
@@ -24,11 +15,6 @@ export enum enumTheme {
 type typeTheme = {
   backgroundColor : string,
   color: string,
-}
-type typeThemeContext = {
-  currTheme : typeTheme,
-  setCurrTheme : React.Dispatch<React.SetStateAction<typeTheme>>,
-  changeCurrTheme: () => void,
 }
 export const darkTheme : typeTheme = {
   backgroundColor : '#222',
@@ -39,36 +25,60 @@ export const lightTheme : typeTheme = {
   color : '#222',
 }
 
-
-export const themeContext = createContext<typeThemeContext>({
+type typeContextProvider = {
+  user : {
+    userId? : string,
+    userName? : string,
+    userEmail? : string,
+  },
+  sessionKey : String,
+  currTheme : typeTheme,
+  setCurrTheme : React.Dispatch<React.SetStateAction<typeTheme>>,
+  changeCurrTheme: () => void,
+  doRefresh: () => void
+}
+let context = createContext<typeContextProvider>({
+  user : '' as unknown as User,
+  sessionKey : localStorage.getItem(strings.sessionKey) as string,
   currTheme : lightTheme,
   setCurrTheme : '' as unknown as React.Dispatch<React.SetStateAction<typeTheme>>,
-  changeCurrTheme: () => {}
-});
-export const useThemeContext = ()=>useContext(themeContext);
+  changeCurrTheme: () => {},
+  doRefresh: () => {}
+})
+export const useContextProvider = () => useContext(context);
 
 export const ContextProvider : React.FC<props> = ({children}) => {
-
+  const [refresh, setRefresh] = useState(false);
   const [currTheme, setCurrTheme] = useState<typeTheme>(lightTheme);
-  const user = '' as unknown as User;
-
-
-  const sessionKey = localStorage.getItem('sessionKey') as string;
-  const [getSessionData, {loading, data : sessionData}] = useMutation(mutationGetSessionData);
+  
+  const sessionKey = localStorage.getItem(strings.sessionKey) as string;
+  console.info(sessionKey);
+  const [getSessionData, {called, loading, data : sessionData}] = useMutation(mutationGetSessionData);
 
   useEffect(()=>{
-    getSessionData({
-      variables:{
-        where:{sessionKey}
-      }
-    });
+    try{
+      getSessionData({
+        variables:{
+          input:{sessionKey}
+        }
+      });
+    }catch(e){
+    }
   }, [sessionKey, getSessionData])
+
+  useEffect(()=>{
+    console.info("refreshed")
+  }, [refresh])
+
+  const doRefresh = ()=>{
+    setRefresh(!refresh);
+  }
   
-  if(loading) return <>checking session...</>
-  console.info(sessionKey);
-  console.info(sessionData);
+  if(!called || loading) return <>checking session...</>
 
-
+  let user = '' as unknown as User;
+  if(sessionData) user = sessionData.getSessionData as User;
+  console.info(user);
 
   const changeCurrTheme = ()=>{
     if(currTheme === lightTheme){
@@ -79,10 +89,17 @@ export const ContextProvider : React.FC<props> = ({children}) => {
   }
 
   return (
-    <themeContext.Provider value={{currTheme, setCurrTheme, changeCurrTheme}}>
-      <context.Provider value={{user, sessionKey}} >
-        {children}
+      <context.Provider value={{
+        user, 
+        sessionKey, 
+        currTheme, 
+        setCurrTheme, 
+        changeCurrTheme,
+        doRefresh
+      }} >
+        {
+          refresh ? (<>{children}</>) : (<>{children}</>)
+        }
       </context.Provider>
-    </themeContext.Provider>
   );
 }

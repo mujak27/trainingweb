@@ -3,18 +3,20 @@ import React, { useState } from "react";
 import { AnimeFavButton } from "./AnimeFavButton";
 
 type props={
-  anime : Anime
+  anime : Anime,
+  favorited : boolean
 };
 
-export const AnimeDetail:React.FC<props> = ({anime}) => {
+export const AnimeDetail:React.FC<props> = ({anime, favorited}) => {
   const [showDetail, setShowDetail] = useState(false);
+  const [fav, setFav] = useState(favorited);
 
   return (
     <>
       <div onClick={()=>setShowDetail(!showDetail)} style={{
         backgroundImage : `url(${anime.animeImageLink})`
       }}>
-        <AnimeFavButton anime={anime} />
+        <AnimeFavButton anime={anime} fav={fav} setFav={setFav} />
         <div>
           name : {anime.animeName}
         </div>

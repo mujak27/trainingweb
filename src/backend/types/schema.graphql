@@ -17,20 +17,21 @@ type AnimeFavorite {
 }
 
 type Mutation {
-  createAnime(where: createAnime!): Anime
-  createAnimeFavorite(where: createAnimeFavorite!): AnimeFavorite
-  createUser(where: createUser!): User
+  createAnime(input: createAnime!): Anime
+  createAnimeFavorite(input: createAnimeFavorite!): AnimeFavorite
+  createUser(input: createUser!): User
   deleteAnime: Anime
-  deleteAnimeFavorite(where: deleteAnimeFavorite!): AnimeFavorite
+  deleteAnimeFavorite(input: deleteAnimeFavorite!): AnimeFavorite
+  deleteAnimeFavoriteById(input: deleteAnimeFavoriteById!): AnimeFavorite
   deleteUser: User
-  getSessionData(where: getSessionData!): User
-  login(where: login!): Session
+  getSessionData(input: getSessionData!): User
+  login(input: login!): Session
   updateAnime: Anime
   updateUser: User
 }
 
 type Query {
-  animeFavoritedByUser(where: animeFavoritedByUser!): [AnimeFavorite!]!
+  animeFavoritedByUser(input: animeFavoritedByUser!): [AnimeFavorite!]!
   animeFavorites: [AnimeFavorite!]!
   animes: [Anime!]!
   users: [User!]!
@@ -41,6 +42,7 @@ type Session {
 }
 
 type User {
+  userAdmin: Boolean!
   userEmail: String!
   userId: ID!
   userName: String!
@@ -48,7 +50,7 @@ type User {
 }
 
 input animeFavoritedByUser {
-  userId: ID!
+  userUserId: ID!
 }
 
 input createAnime {
@@ -70,6 +72,11 @@ input createUser {
 }
 
 input deleteAnimeFavorite {
+  animeAnimeId: ID!
+  userUserId: ID!
+}
+
+input deleteAnimeFavoriteById {
   animeFavoriteId: ID!
 }
 

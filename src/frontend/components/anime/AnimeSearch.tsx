@@ -9,7 +9,7 @@ export const AnimeSearch:React.FC<props> = ({search, setSearch}) => {
 
   return (
     <>
-      <input type='text' value={search} onChange={e=>setSearch(e.currentTarget.value)} />
+      <input placeholder="search" type='text' value={search} onChange={e=>setSearch(e.currentTarget.value)} />
     </>
   )
 }

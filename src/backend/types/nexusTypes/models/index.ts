@@ -14,6 +14,7 @@ export const User = objectType({
     t.nonNull.string('userName')
     t.nonNull.string('userEmail')
     t.nonNull.string('userPassword')
+    t.nonNull.boolean('userAdmin')
   }
 })
 

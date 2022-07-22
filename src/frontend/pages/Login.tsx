@@ -2,6 +2,7 @@ import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { mutationLogin } from "../lib/graphql/query";
+import { strings } from "../utils/strings";
 
 type props={
 
@@ -19,7 +20,7 @@ export const Login:React.FC<props> = () => {
     console.info(password)
     try{
       login({variables:{
-        where:{
+        input:{
           userEmail : email,
           userPassword : password
         }
@@ -32,7 +33,7 @@ export const Login:React.FC<props> = () => {
   if(called){
     if(!loading) {
       if(sessionData){
-        localStorage.setItem('sessionKey', sessionData.login.sessionKey);
+        localStorage.setItem(strings.sessionKey, sessionData.login.sessionKey);
       }
     }
   }
