@@ -18,13 +18,13 @@ import { schema as nexusSchema } from './backend/types/nexusSchemaGen';
 const startServer = async()=>{
 
   // postgres
-  const {Client} = pg;
-  const pgClient = new Client({
-    user: 'user',
-    database: 'db',                                                          
-    port: 5432
-  })
-  pgClient.connect((err : Error)=>{if(err) throw err;})
+  // const {Client} = pg;
+  // const pgClient = new Client({
+  //   user: 'user',
+  //   database: 'db',                                                          
+  //   port: 5432
+  // })
+  // pgClient.connect((err : Error)=>{if(err) throw err;})
   
   
   // types and gql
