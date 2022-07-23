@@ -99,7 +99,8 @@ const startServer = async()=>{
   })
   
   const express = expressServer();
-  const expressPort = 5003;
+  const expressPort = process.env.PORT
+  console.log(expressPort);
   express.listen(expressPort, ()=>{
     console.log(`express started at ${expressPort}`);
   })
