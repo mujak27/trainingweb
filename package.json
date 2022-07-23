@@ -28,7 +28,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "build": "react-scripts build",
+    "build": "npm run back:prisma:push && npm run back:nexus:generate && npm run monorepo",
     "monorepo": "concurrently 'npm run back:nodemon' 'npm run front:react:start'",
     "front:react:start": "react-scripts start",
     "back:nodemon": "nodemon --watch './**/*.ts' --exec 'node --loader ts-node/esm' src/server.ts",
