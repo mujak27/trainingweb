@@ -5,7 +5,7 @@ import path from 'path';
 const app = express();
 
 
-(async()=>{
+// (async()=>{
   // const apolloServer = new ApolloServer({
   //   // schema,
   //   schema: nexusSchema,
@@ -29,5 +29,5 @@ const app = express();
   app.listen(expressPort, ()=>{
     console.log(`express started at ${expressPort}`);
   })
-})()
+// })()
 
