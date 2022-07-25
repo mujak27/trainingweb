@@ -1,23 +1,27 @@
 // import { ApolloServer } from 'apollo-server';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
+import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
-import path from 'path';
+import { createContext } from './backend//utils/context';
+import { schema as nexusSchema } from './backend/types/nexusSchemaGen';
+import path from 'path'
 
 const app = express();
 
 
-// (async()=>{
-  // const apolloServer = new ApolloServer({
-  //   // schema,
-  //   schema: nexusSchema,
-  //   plugins: [ApolloServerPluginLandingPageGraphQLPlayground],
-  //   context: createContext
-  // })
+(async()=>{
+  const apolloServer = new ApolloServer({
+    // schema,
+    schema: nexusSchema,
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground],
+    context: createContext
+  })
   
-  // await apolloServer.start()
-  // apolloServer.applyMiddleware({
-  //   app : app,
-  // })
-
+  await apolloServer.start()
+  apolloServer.applyMiddleware({
+    app : app,
+  })
+  
   app.use(express.static(path.resolve(__dirname, '../build/')));
   
   app.get('*', (req, res) => {
@@ -29,5 +33,5 @@ const app = express();
   app.listen(expressPort, ()=>{
     console.log(`express started at ${expressPort}`);
   })
-// })()
+})()
 
