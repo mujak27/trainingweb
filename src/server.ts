@@ -4,7 +4,6 @@ import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import { createContext } from './backend//utils/context';
 import { schema as nexusSchema } from './backend/types/nexusSchemaGen';
-import path from 'path'
 
 const app = express();
 
@@ -22,11 +21,11 @@ const app = express();
     app : app,
   })
   
-  app.use(express.static(path.resolve(__dirname, '../build/')));
+  // app.use(express.static(path.resolve(__dirname, '../build/')));
   
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
-  });
+  // app.get('*', (req, res) => {
+  //   res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+  // });
 
   const expressPort = process.env.PORT
   console.log(expressPort);
