@@ -5,9 +5,12 @@ type props = {
   children : React.ReactNode | React.ReactNode[]
 }
 export const ApolloClientProvider : React.FC<props> = ({children}) => {
-  console.info(process.env.PORT);
+  const graphqlServerUri = `${window.location.href}graphql`;
+  console.info(graphqlServerUri);
   const client = new ApolloClient({
-    uri: `http://localhost:${process.env.PORT}/graphql`,
+    uri: graphqlServerUri,
+    // uri: `http://localhost:${process.env.PORT}/graphql`,
+    // uri: `http://localhost:5003/graphql`,
     cache: new InMemoryCache(),
   });
 

@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import { useContextProvider } from "../../context/ContextProvider";
 import { queryAnimes, queryAnimesFavoritedByUser } from "../../lib/graphql/query";
+import { Navigation } from "../navigation/Navigation";
 import { AnimeCreate } from "./AnimeCreate";
 import { AnimeItem } from "./AnimeItem";
 import { AnimeSearch } from "./AnimeSearch";
@@ -40,10 +41,11 @@ export const AnimeAll:React.FC<props> = () => {
   console.info(resAnimeFavorites);
 
   const animes = resAnimes.animes as Array<Anime> ;
-  const animeFavorites = resAnimeFavorites.animeFavoritedByUser as Array<AnimeFavorite>;
+  const animeFavorites = resAnimeFavorites ? resAnimeFavorites.animeFavoritedByUser as Array<AnimeFavorite> : [];
 
   return (
     <>
+      <Navigation />
       <div style={{
         backgroundColor: currTheme.backgroundColor,
         color : currTheme.color

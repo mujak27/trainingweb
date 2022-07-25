@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import { useContextProvider } from "../../context/ContextProvider";
 
 type props={
@@ -6,7 +7,7 @@ type props={
 };
 
 export const Navigation:React.FC<props> = () => {
-  const {currTheme, changeCurrTheme} = useContextProvider();
+  const {currTheme, changeCurrTheme, user} = useContextProvider();
 
   return (
     <>
@@ -17,6 +18,13 @@ export const Navigation:React.FC<props> = () => {
         }}
         onClick={()=>changeCurrTheme()}>change theme
       </button>
+      {
+        user ? 
+          (<>{user.userName}</>) : 
+          (<>
+            <NavLink to={'/login'}>login</NavLink>
+          </>)
+      }
     </>
   )
 }

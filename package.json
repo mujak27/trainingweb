@@ -30,6 +30,7 @@
   },
   "scripts": {
     "build": "react-scripts start",
+    "react-build" : "react-scripts build",
     "monorepo": "concurrently 'npm run back:nodemon' 'npm run front:react:start'",
     "front:react:start": "react-scripts start",
     "back:nodemon": "nodemon --watch './**/*.ts' --exec 'node --loader ts-node/esm' src/server.ts",
