@@ -5,6 +5,8 @@ import express from 'express';
 import path from 'path';
 import { createContext } from './backend//utils/context';
 import { schema as nexusSchema } from './backend/types/nexusSchemaGen';
+import process from 'process'
+require('dotenv').config()
 
 const app = express();
 
@@ -28,7 +30,8 @@ const app = express();
     res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
   });
 
-  const expressPort = process.env.PORT
+  const expressPort = process.env.PORT;
+  console.log(process.env.DATABASE_URL);
   console.log(expressPort);
   app.listen(expressPort, ()=>{
     console.log(`express started at ${expressPort}`);
