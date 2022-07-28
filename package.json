@@ -35,7 +35,7 @@
     "monorepo": "concurrently 'npm run back:nodemon' 'npm run front:react:start'",
     "front:react:start": "react-scripts start",
     "back:nodemon": "nodemon --watch './**/*.ts' --exec 'node --loader ts-node/esm' src/server.ts",
-    "back:nodeLoader": "node --loader ts-node/esm src/server.ts",
+    "back:nodeLoader": "node --loader ts-node/esm src/server.ts --prefix client",
     "back:nexus:generate": "ts-node --transpile-only src/backend/types/nexusSchemaGen.ts",
     "back:prisma:migrateDev": "prisma migrate dev --schema src/backend/prisma/schema.prisma",
     "back:prisma:push": "prisma db push --schema src/backend/prisma/schema.prisma"
